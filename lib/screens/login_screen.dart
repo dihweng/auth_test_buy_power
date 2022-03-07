@@ -1,7 +1,13 @@
+import 'package:auth_test/providers/auth_provider.dart';
 import 'package:auth_test/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:auth_test/model/user_model.dart';
+import 'package:auth_test/providers/user_provider.dart';
+
+
+import 'package:provider/provider.dart';
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -20,15 +26,44 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+  
+    AuthProvider auth = Provider.of<AuthProvider>(context);
 
+    void onLogin (String email, String password)async{
+
+      final Future<Map<String,dynamic>> respose =  auth.login(email, password);
+
+      respose.then((response) {
+        if (response['status']) {
+
+          User user = response['user'];
+
+          Provider.of<UserProvider>(context, listen: false).setUser(user);
+
+          Navigator.pushReplacementNamed(context, '/dashboard');
+
+        } else {
+          Fluttertoast.showToast(msg: response['message']['message'].toString());
+        }
+      });
+    }
     // email input field
     final emailField  = TextFormField(
       autofocus: false,
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
-      // validator: () {},
-      onSaved: (value)
-      {
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Please Enter Your Email");
+        }
+        // reg expression for email validation
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+            .hasMatch(value)) {
+          return ("Please Enter a valid email");
+        }
+        return null;
+      },      
+      onSaved: (value){
         emailController.text = value!;
       },
       textInputAction: TextInputAction.next,
@@ -47,7 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: passwordController,
       obscureText: true,
-      // validator: () {},
+      validator: (value) {
+        RegExp regex = new RegExp(r'^.{6,}$');
+        if (value!.isEmpty) {
+          return ("Password is required for login");
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Enter Valid Password(Min. 6 Character)");
+        }
+      },
       onSaved: (value)
       {
         passwordController.text = value!;
@@ -71,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          signIn(emailController.text, passwordController.text);
+          onLogin(emailController.text, passwordController.text);
         },
         child: Text(
           "Login",
@@ -143,9 +186,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
   // login function
-  void signIn(String email, String password) async {
-    Fluttertoast.showToast(msg: "Login Successful");
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => RegistrationScreen()));
-  }
+
+  
+
+  // void signIn(String email, String password) async {
+  //   Fluttertoast.showToast(msg: "Login Successful");
+  //   Navigator.of(context).pushReplacement(
+  //     MaterialPageRoute(builder: (context) => RegistrationScreen()));
+  // }
 }

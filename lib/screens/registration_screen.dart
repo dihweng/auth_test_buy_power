@@ -15,8 +15,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   // string for displaying the error Message
   String? errorMessage;
 
-
-  // our form key
+  // form key
   final _formKey = GlobalKey<FormState>();
   // editing Controller
   final firstNameEditingController = new TextEditingController();
@@ -51,7 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "First Name",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
         ));
 
@@ -75,7 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Second Name",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
         ));
 
@@ -104,7 +103,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
         ));
 
@@ -131,7 +130,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
         ));
 
@@ -156,14 +155,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirm Password",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
         ));
 
     //signup button
     final signUpButton = Material(
       elevation: 5,
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(8),
       color: Colors.lightGreen[800],
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -188,7 +187,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           icon: Icon(Icons.arrow_back, color: Colors.lightGreen[800]),
           onPressed: () {
             // passing this to our root
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
       ),
@@ -205,7 +204,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                        height: 180,
+                        height: 150,
+                        width: 150,
                         child: Image.asset(
                           "assets/logo.png",
                           fit: BoxFit.contain,
