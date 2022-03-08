@@ -47,9 +47,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       auth.loggedInStatus = Status.Registering;
       auth.notify();
 
-      var respose = auth.register(email, firstName, secondName, password);
+      var respnseData = AuthProvider.register(email, firstName, secondName, password);
 
-      respose.then((response) {
+      respnseData.then((response) {
         if (response['status']) {
 
           User user = response['user'];
