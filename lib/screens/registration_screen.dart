@@ -25,7 +25,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   // editing Controller
   final firstNameEditingController = TextEditingController();
-  final secondNameEditingController = TextEditingController();
+  final phoneEditingController = TextEditingController();
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final confirmPasswordEditingController = TextEditingController();
@@ -105,24 +105,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     //second name field
-    final secondNameField = TextFormField(
+    final phoneNumberField = TextFormField(
       autofocus: false,
-      controller: secondNameEditingController,
-      keyboardType: TextInputType.name,
+      controller: phoneEditingController,
+      keyboardType: TextInputType.phone,
       validator: (value) {
         if (value.isEmpty) {
-          return ("Second Name cannot be Empty");
+          return ("Phone Number cannot be Empty");
         }
         return null;
       },
       onSaved: (value) {
-        secondNameEditingController.text = value;
+        phoneEditingController.text = value;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.account_circle),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Second Name",
+        hintText: "Phone Number",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -225,7 +225,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           doRegister(
             emailEditingController.text,
             firstNameEditingController.text, 
-            secondNameEditingController.text, 
+            phoneEditingController.text, 
             passwordEditingController.text,
           );
         },
@@ -245,7 +245,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.lightGreen[800]),
           onPressed: () {
-            // passing this to our root
             Navigator.pop(context);
           },
         ),
@@ -263,16 +262,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                      height: 150,
+                      // height: 150,
                       width: 150,
                       child: Image.asset(
                         "assets/logo.png",
                         fit: BoxFit.contain,
                       )),
-                    const SizedBox(height: 45),
+                    const SizedBox(height: 25),
                     firstNameField,
                     const SizedBox(height: 20),
-                    secondNameField,
+                    phoneNumberField,
                     const SizedBox(height: 20),
                     emailField,
                     const SizedBox(height: 20),

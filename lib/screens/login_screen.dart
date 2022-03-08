@@ -38,11 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
     
-    void onLogin (String email, String password)async{
+    Future<Map<String, dynamic>> onLogin (String email, String password)async{
 
-      final Future<Map<String,dynamic>> respose =  auth.login(email, password);
-
-      respose.then((response) {
+      final Future<Map<String,dynamic>> resData =  auth.login(email, password);
+      resData.then((response) {
         if (response['status']) {
 
           User user = response['user'];
@@ -172,10 +171,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                    RegistrationScreen()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                  RegistrationScreen()));
                           },
                           child: Text(
                             "SignUp",

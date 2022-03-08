@@ -57,11 +57,10 @@ class AuthProvider extends ChangeNotifier {
 
       final Map<String, dynamic> responseData = json.decode(response.body);
 
-      // print(responseData);
-
       var userData = responseData['data'];
 
       User authUser = User.fromJson(userData);
+      print(authUser);
 
       UserPreferences().saveUser(authUser);
 

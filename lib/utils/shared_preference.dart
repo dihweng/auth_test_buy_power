@@ -1,7 +1,7 @@
 import 'package:auth_test/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class UserPreferences {
-  Future<bool> saveUser(User user) async {
+  Future<void> saveUser(User user) async {
     final userPrefs = await SharedPreferences.getInstance();
 
     userPrefs.setInt("userId", user.userId);
@@ -10,7 +10,6 @@ class UserPreferences {
     userPrefs.setString("phone", user.phone);
     userPrefs.setString("token", user.token);
     userPrefs.setString("renewalToken", user.renewalToken);
-    // return true;
   }
 
   Future<User> getUser() async {

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Auth Test Demo',
           theme: ThemeData(
             primarySwatch: Colors.green,
             visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.data.token == null) {
-                      return LoginScreen();
+                      return SplashScreen();
                     } else {
                       UserPreferences().removeUser();
                     }
@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
                 }
               }),
           routes: {
+            '/splash_screen': (context) =>  SplashScreen(),
             '/home_screen': (context) => HomeScreen(),
             '/login': (context) => LoginScreen(),
             '/register': (context) => RegistrationScreen(),
