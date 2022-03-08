@@ -1,10 +1,10 @@
 class User {
-  int? userId;
-  String? name;
-  String? email;
-  String? phone;
-  String ?token;
-  String? renewalToken;
+  int userId;
+  String name;
+  String email;
+  String phone;
+  String token;
+  String renewalToken;
 
   User({this.userId, this.name, this.email, this.phone, this.token, this.renewalToken});
 

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 // import 'package:auth_test/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
-        if (value!.isEmpty) {
+        if (value.isEmpty) {
           return ("Please Enter Your Email");
         }
         // reg expression for email validation
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },      
       onSaved: (value){
-        emailController.text = value!;
+        emailController.text = value;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       validator: (value) {
         RegExp regex = RegExp(r'^.{6,}$');
-        if (value!.isEmpty) {
+        if (value.isEmpty) {
           return ("Password is required for login");
         }
         if (!regex.hasMatch(value)) {
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       onSaved: (value)
       {
-        passwordController.text = value!;
+        passwordController.text = value;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
