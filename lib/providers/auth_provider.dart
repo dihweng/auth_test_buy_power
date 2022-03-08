@@ -1,6 +1,7 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:auth_test/model/user_model.dart';
 import 'package:auth_test/utils/app_url.dart';
@@ -22,69 +23,14 @@ class AuthProvider extends ChangeNotifier {
   Status _registeredInStatus = Status.NotRegistered;
 
   Status get loggedInStatus => _loggedInStatus;
+  Status get registeredInStatus => _registeredInStatus;
 
   set loggedInStatus(Status value) {
     _loggedInStatus = value;
   }
 
-  Status get registeredInStatus => _registeredInStatus;
-
   set registeredInStatus(Status value) {
     _registeredInStatus = value;
-  }
-
-  Future<FutureOr> register(String email, 
-    String password, String firstName, String lastName) async {
-    final Map<String, dynamic> apiBodyData = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'password': password
-    };
-
-    return await post(
-      Uri.parse(AppUrl.register),
-      body: json.encode(apiBodyData),
-      headers: {'Content-Type':'application/json'}
-    ).then(onValue)
-    .catchError(onError);
-  }
-
-  notify(){
-    notifyListeners();
-  }
-
-  static Future<FutureOr> onValue (Response response) async {
-    var result ;
-
-    final Map<String, dynamic> responseData = json.decode(response.body);
-
-    print(responseData);
-
-    if(response.statusCode == 200){
-
-      var userData = responseData['data'];
-
-      // create a user model
-      User authUser = User.fromJson(responseData);
-
-      // create shared preferences and save data
-      UserPreferences().saveUser(authUser);
-
-      result = {
-        'status':true,
-        'message':'Successfully registered',
-        'data':authUser
-      };
-
-    }else{
-      result = {
-        'status':false,
-        'message':'Successfully registered',
-        'data':responseData
-      };
-    }
-    return result;
   }
 
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -92,8 +38,10 @@ class AuthProvider extends ChangeNotifier {
     var result;
 
     final Map<String, dynamic> loginData = {
-      'email': email,
-      'Password': password
+      'user' : {
+        'email': email,
+        'Password': password
+      }
     };
 
     _loggedInStatus = Status.Authenticating;
@@ -109,9 +57,9 @@ class AuthProvider extends ChangeNotifier {
 
       final Map<String, dynamic> responseData = json.decode(response.body);
 
-      print(responseData);
+      // print(responseData);
 
-      var userData = responseData['Content'];
+      var userData = responseData['data'];
 
       User authUser = User.fromJson(userData);
 
@@ -135,9 +83,68 @@ class AuthProvider extends ChangeNotifier {
 
   }
 
+  static Future<FutureOr> register(String email, 
+    String firstName, String secondName, String password) async {
+
+    final Map<String, dynamic> registrationData = {
+      'user':{
+        'firstName': firstName,
+        'lastName': secondName,
+        'email': email,
+        'password': password
+      }
+    };
+
+    // _registeredInStatus = Status.Registering;
+    // notifyListeners();
+
+    return await post(
+      Uri.parse(AppUrl.register),
+      body: json.encode(registrationData),
+      headers: {'Content-Type':'application/json'}
+    ).then(onValue)
+    .catchError(onError);
+  }
+
+  notify(){
+    notifyListeners();
+  }
+
+  static Future<FutureOr> onValue (Response response) async {
+    var result;
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+
+    print(responseData);
+
+    if(response.statusCode == 200){
+
+      var userData = responseData['data'];
+
+      // create a user model
+      User authUser = User.fromJson(userData);
+
+      // create shared preferences and save data
+      UserPreferences().saveUser(authUser);
+
+      result = {
+        'status':true,
+        'message':'Successfully registered',
+        'data':authUser
+      };
+
+    }else{
+      result = {
+        'status':false,
+        'message':'Successfully registered',
+        'data':responseData
+      };
+    }
+    return result;
+  }
 
   static onError(error){
-    print('the error is ${error.detail}');
+    // print('the error is ${error.detail}');
     return {
       'status':false,
       'message':'Unsuccessful Request',

@@ -1,13 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:auth_test/providers/auth_provider.dart';
 import 'package:auth_test/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:auth_test/model/user_model.dart';
 import 'package:auth_test/providers/user_provider.dart';
-
-
 import 'package:provider/provider.dart';
+// import 'package:auth_test/screens/home_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -21,14 +22,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formkey = GlobalKey<FormState>();
 
   // text input editing controller
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
   
     AuthProvider auth = Provider.of<AuthProvider>(context);
 
+    var loading  = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+      CircularProgressIndicator(),
+      Text(" Registering ... Please wait")
+      ],
+    );
+    
     void onLogin (String email, String password)async{
 
       final Future<Map<String,dynamic>> respose =  auth.login(email, password);
@@ -40,7 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
           Provider.of<UserProvider>(context, listen: false).setUser(user);
 
-          Navigator.pushReplacementNamed(context, '/dashboard');
+          // Navigator.pushReplacementNamed(context, HomeScreen());
+          auth.loggedInStatus = Status.LoggedIn;
+          auth.notify();
 
         } else {
           Fluttertoast.showToast(msg: response['message']['message'].toString());
@@ -83,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: passwordController,
       obscureText: true,
       validator: (value) {
-        RegExp regex = new RegExp(r'^.{6,}$');
+        RegExp regex = RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
           return ("Password is required for login");
         }
@@ -150,9 +161,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     passwordField,
                     SizedBox(height: 25),
-
-                    loginButton,
-                    SizedBox(height: 20),
+                    auth.loggedInStatus == Status.Authenticating
+                    ?loading
+                      : loginButton,
+                      SizedBox(height: 15),       
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -185,13 +197,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-  // login function
-
-  
-
-  // void signIn(String email, String password) async {
-  //   Fluttertoast.showToast(msg: "Login Successful");
-  //   Navigator.of(context).pushReplacement(
-  //     MaterialPageRoute(builder: (context) => RegistrationScreen()));
-  // }
 }
