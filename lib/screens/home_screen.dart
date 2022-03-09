@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:oauth_dio/oauth_dio.dart';
+
+import 'package:auth_test/model/token_model.dart';
 import 'package:auth_test/screens/splash_screen.dart';
 import 'package:auth_test/utils/shared_preference.dart';
-import 'package:flutter/material.dart';
-// import 'package:auth_test/model/user_model.dart';
-import 'package:auth_test/model/token_model.dart';
-// import 'package:auth_test/providers/user_provider.dart';
 import 'package:auth_test/providers/token_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
   // AuthProvider auth = Provider.of<AuthProvider>(context);
 
 
+  // OAuthToken token = oauth.requestToken(
+  //   RefreshTokenGrant(
+  //     refreshToken: '<YOUR REFRESH TOKEN>'
+  //   )
+  // ).then((token) {
+  //     print(token.accessToken);
+  // });
     Token token = Provider.of<TokenProvider>(context).token;
     // User user = Provider.of<UserProvider>(context).user;
     void doLogout(){
