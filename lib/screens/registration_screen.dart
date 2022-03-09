@@ -50,8 +50,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       final Future<Map<String, dynamic>> respnseData = auth.register(email, firstName, secondName, password);
 
       respnseData.then((response) {
-          // Navigator.pushReplacementNamed(context, '/login');
-          print({' reg staus', response});
         if (response['status']) {
 
           User user = response['data'];

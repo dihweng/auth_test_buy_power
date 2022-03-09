@@ -42,16 +42,26 @@ class MyApp extends StatelessWidget {
               future: getTokenData(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
+                  case ConnectionState.none:{
+
+                    print(snapshot.data);
+                  }
+                  break;
+                  case ConnectionState.waiting:{
+                    print(snapshot.data);
                     return CircularProgressIndicator();
+                  }
+                  break;
                   default:
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.data.token == null) {
                       return SplashScreen();
-                    } else {
-                      UserPreferences().removeUser();
+                    }else if(snapshot.data.token != null){
+                      print({'Hello testing token', snapshot.data.token});
+                      return HomeScreen();
+                    }else {
+                      UserPreferences().removeToken();
                     }
                     return SplashScreen(token: snapshot.data);
                 }

@@ -1,7 +1,7 @@
 import 'package:auth_test/screens/splash_screen.dart';
 import 'package:auth_test/utils/shared_preference.dart';
 import 'package:flutter/material.dart';
-import 'package:auth_test/model/user_model.dart';
+// import 'package:auth_test/model/user_model.dart';
 import 'package:auth_test/model/token_model.dart';
 // import 'package:auth_test/providers/user_provider.dart';
 import 'package:auth_test/providers/token_provider.dart';
@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const SizedBox(height: 100,),
           // Center(child: Text(user.email)),
+          Center(child: Text('Welcome Back')),
           const SizedBox(height: 100),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -47,7 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onPressed: () {doLogout();
             },
-            child: Text('Logout'),
+            child: Text(
+              'Logout',
+              ),
           )
         ],
       ),
