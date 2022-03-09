@@ -70,6 +70,7 @@ class AuthProvider extends ChangeNotifier {
 
       _loggedInStatus = Status.LoggedIn;
       notifyListeners();
+     
 
       result = {'status': true, 'message': 'Successful', 'user': responseData};
 
@@ -87,45 +88,25 @@ class AuthProvider extends ChangeNotifier {
 
   }
 
-  static Future<FutureOr> register(String email, 
-    String firstName, String secondName, String password) async {
-
+  Future<Map<String, dynamic>> register(String email, String firstName, String secondName, String password) async {
+    var result;
     final Map<String, dynamic> registrationData = {
-      'user':{
-        'firstName': firstName,
-        'phone': secondName,
-        'email': email,
-        'password': password
-      }
+      'name': firstName,
+      'phone': secondName,
+      'email': email,
+      'password': password
     };
+    _registeredInStatus = Status.Registering;
+    notifyListeners();
+    print({'email  check', registrationData});
 
-    // _registeredInStatus = Status.Registering;
-    // notifyListeners();
-
-    return await post(
+    Response response = await post(
       Uri.parse(AppUrl.register),
       body: json.encode(registrationData),
       headers: {'Content-Type':'application/json'}
-    ).then(
-      // print(object)
-      onValue
-    )
-    .catchError(onError);
-  }
-
-  notify(){
-    notifyListeners();
-  }
-
-  static Future<FutureOr> onValue (Response response) async {
-    var result;
-
-    final Map<String, dynamic> responseData = json.decode(response.body);
-
-    print({'hello sign up,', responseData});
-
-    if(response.statusCode == 200){
-
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
       var userData = responseData['data'];
 
       // create a user model
@@ -133,22 +114,44 @@ class AuthProvider extends ChangeNotifier {
 
       // create shared preferences and save data
       UserPreferences().saveUser(authUser);
-
+      _registeredInStatus = Status.Registered;
+      notifyListeners();
       result = {
         'status':true,
         'message':'Successfully registered',
         'data':authUser
       };
-
-    }else{
-      result = {
-        'status':false,
-        'message':'Successfully registered',
-        'data':responseData
-      };
+    }else if (response.statusCode >= 300){
+      print({'resgistration error '});
+      // result = {
+      //   'status':false,
+      //   'message':'Successfully registered',
+      //   'data':responseData[]
+      // };
     }
-    return result;
+   return result;
   }
+
+  notify(){
+    notifyListeners();
+  }
+
+  // static Future<FutureOr> onValue (Response response) async {
+
+  //   final Map<String, dynamic> responseData = json.decode(response.body);
+  //   if(response.statusCode == 200){
+
+      
+
+  //   }else{
+  //     result = {
+  //       'status':false,
+  //       'message':'Successfully registered',
+  //       'data':responseData
+  //     };
+  //   }
+  //   return result;
+  // }
 
   static onError(error){
     // print('the error is ${error.detail}');

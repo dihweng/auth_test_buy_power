@@ -43,26 +43,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ],
     );
 
-    Future <FutureOr<dynamic>> doRegister (String email, String password, String firstName, String secondName)async{
+    Future <Map<String, dynamic>> doRegister (String email, String firstName,  String secondName, String password)async{
 
       auth.loggedInStatus = Status.Registering;
       auth.notify();
 
-      var respnseData = AuthProvider.register(email, firstName, secondName, password);
+      final Future<Map<String, dynamic>> respnseData = auth.register(email, firstName, secondName, password);
 
       respnseData.then((response) {
-        if (response) {
+        if (response['data']) {
 
-          User user = response;
+          User user = response['data'];
 
           Fluttertoast.showToast(msg: "Account created successfully :) ");
           Provider.of<UserProvider>(context, listen: false).setUser(user);
 
-          Navigator.pushAndRemoveUntil(
-            (context),
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false);
-            // Navigator.pushReplacementNamed(context, '/dashboard');
+          // Navigator.pushAndRemoveUntil(
+          //   (context),
+          //   MaterialPageRoute(builder: (context) => HomeScreen()),
+          //   (route) => false);
+          Navigator.pushReplacementNamed(context, '/dashboard');
 
           auth.loggedInStatus = Status.Registered;
           auth.notify();
@@ -97,7 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.account_circle),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "First Name",
+        hintText: "Full Name",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),

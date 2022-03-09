@@ -54,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
           auth.loggedInStatus = Status.LoggedIn;
           auth.notify();
-          print({'email checl', email});
           Navigator.pushReplacementNamed(context, '/home_screen');
 
           // Navigator.pushAndRemoveUntil(
