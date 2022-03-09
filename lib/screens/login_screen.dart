@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (response['status']) {
 
           Token token = response['access_token'];
-
+          Fluttertoast.showToast(msg: "Account created successfully :) ");
           Provider.of<TokenProvider>(context, listen: false).setToken(token);
 
           auth.loggedInStatus = Status.LoggedIn;

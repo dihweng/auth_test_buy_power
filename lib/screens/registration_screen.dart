@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:auth_test/screens/home_screen.dart';
 import 'package:auth_test/providers/auth_provider.dart';
 import 'package:auth_test/model/user_model.dart';
 import 'package:auth_test/providers/user_provider.dart';
@@ -51,20 +50,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       final Future<Map<String, dynamic>> respnseData = auth.register(email, firstName, secondName, password);
 
       respnseData.then((response) {
-        if (response['data']) {
+          Navigator.pushReplacementNamed(context, '/login');
+        if (response.isNotEmpty) {
 
           User user = response['data'];
 
           Fluttertoast.showToast(msg: "Account created successfully :) ");
           Provider.of<UserProvider>(context, listen: false).setUser(user);
 
-          // Navigator.pushAndRemoveUntil(
-          //   (context),
-          //   MaterialPageRoute(builder: (context) => HomeScreen()),
-          //   (route) => false);
-          Navigator.pushReplacementNamed(context, '/dashboard');
-
-          auth.loggedInStatus = Status.Registered;
+          Navigator.pushReplacementNamed(context, '/login_screen');
+          auth.registeredInStatus = Status.Registered;
           auth.notify();
 
         } else {

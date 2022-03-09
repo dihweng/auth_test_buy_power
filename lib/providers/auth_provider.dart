@@ -57,7 +57,7 @@ class AuthProvider extends ChangeNotifier {
       headers: {'Content-Type': 'application/json',},
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200 && response.statusCode <= 300) {
 
       final Map<String, dynamic> responseData = json.decode(response.body);
 
