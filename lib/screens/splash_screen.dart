@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class SplashScreen extends StatelessWidget {
   final User user;
 
-  const SplashScreen({Key key, this.user}) : super(key: key);
+  const SplashScreen({Key key, this.user, token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

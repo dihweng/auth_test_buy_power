@@ -1,3 +1,8 @@
+import 'package:auth_test/providers/token_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:auth_test/model/token_model.dart';
 import 'package:auth_test/providers/auth_provider.dart';
 import 'package:auth_test/providers/user_provider.dart';
 import 'package:auth_test/screens/home_screen.dart';
@@ -5,10 +10,8 @@ import 'package:auth_test/screens/login_screen.dart';
 import 'package:auth_test/screens/registration_screen.dart';
 import 'package:auth_test/screens/splash_screen.dart';
 import 'package:auth_test/utils/shared_preference.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'model/user_model.dart';
+// import 'model/user_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,12 +24,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    Future<User> getUserData() => UserPreferences().getUser();
+    Future<Token> getTokenData() => UserPreferences().getToken();
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => TokenProvider()),
       ],
       child: MaterialApp(
           title: 'Auth Test Demo',
@@ -35,7 +39,7 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: FutureBuilder(
-              future: getUserData(),
+              future: getTokenData(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
                     } else {
                       UserPreferences().removeUser();
                     }
-                    return SplashScreen(user: snapshot.data);
+                    return SplashScreen(token: snapshot.data);
                 }
               }),
           routes: {

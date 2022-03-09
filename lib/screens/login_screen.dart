@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:auth_test/providers/auth_provider.dart';
-import 'package:auth_test/screens/registration_screen.dart';
+import 'package:auth_test/model/token_model.dart';
+import 'package:auth_test/providers/token_provider.dart';
+import 'package:auth_test/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:auth_test/model/user_model.dart';
-import 'package:auth_test/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'package:auth_test/model/user_model.dart';
+import 'package:auth_test/providers/auth_provider.dart';
+import 'package:auth_test/providers/user_provider.dart';
+import 'package:auth_test/screens/registration_screen.dart';
 // import 'package:auth_test/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -44,16 +48,22 @@ class _LoginScreenState extends State<LoginScreen> {
       resData.then((response) {
         if (response['status']) {
 
-          User user = response['user'];
+          Token token = response['access_token'];
 
-          Provider.of<UserProvider>(context, listen: false).setUser(user);
+          Provider.of<TokenProvider>(context, listen: false).setToken(token);
 
-          // Navigator.pushReplacementNamed(context, HomeScreen());
           auth.loggedInStatus = Status.LoggedIn;
           auth.notify();
+          print({'email checl', email});
+          Navigator.pushReplacementNamed(context, '/home_screen');
+
+          // Navigator.pushAndRemoveUntil(
+          //   (context),
+          //   MaterialPageRoute(builder: (context) => HomeScreen()),
+          //   (route) => false);
 
         } else {
-          Fluttertoast.showToast(msg: response['message']['message'].toString());
+          Fluttertoast.showToast(msg: response['message']['error'].toString());
         }
       });
     }

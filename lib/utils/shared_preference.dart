@@ -1,4 +1,5 @@
 import 'package:auth_test/model/user_model.dart';
+import 'package:auth_test/model/token_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class UserPreferences {
   Future<void> saveUser(User user) async {
@@ -41,9 +42,31 @@ class UserPreferences {
     userPrefs.remove("token");
   }
 
-  Future<String> getToken(args) async {
-    final SharedPreferences userPrefs = await SharedPreferences.getInstance();
-    String token = userPrefs.getString("token");
-    return token;
+  // Future<String> getToken(args) async {
+  //   final SharedPreferences userPrefs = await SharedPreferences.getInstance();
+  //   String token = userPrefs.getString("token");
+  //   return token;
+  // }
+
+  Future<void> saveToken(Token token) async {
+    final tokenPrefs = await SharedPreferences.getInstance();
+    tokenPrefs.setString("token", token.token);
+    // userPrefs.setString("renewalToken", user.renewalToken);
   }
-}
+
+  Future<Token> getToken() async {
+    final tokenPrefs = await SharedPreferences.getInstance();
+
+    String token = tokenPrefs.getString("token");
+
+    return Token(
+      token: token,
+    );
+  }
+
+  void removeToken() async {
+    final tokenPrefs = await SharedPreferences.getInstance();
+
+    tokenPrefs.remove("token");
+  }
+} 

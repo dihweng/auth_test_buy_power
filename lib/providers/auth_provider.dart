@@ -2,11 +2,13 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:auth_test/model/token_model.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_test/model/user_model.dart';
 import 'package:auth_test/utils/app_url.dart';
 import 'package:auth_test/utils/shared_preference.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum Status {
   NotLoggedIn,
@@ -33,15 +35,17 @@ class AuthProvider extends ChangeNotifier {
     _registeredInStatus = value;
   }
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  // Future<String> saveToken(String token)async{
+  //   final userToken = await SharedPreferences.getInstance();
+  //   userToken.setString('token', token);
+  // }
 
+  Future<Map<String, dynamic>> login(String email, String password) async {
     var result;
 
     final Map<String, dynamic> loginData = {
-      'user' : {
         'email': email,
-        'Password': password
-      }
+        'password': password
     };
 
     _loggedInStatus = Status.Authenticating;
@@ -57,25 +61,26 @@ class AuthProvider extends ChangeNotifier {
 
       final Map<String, dynamic> responseData = json.decode(response.body);
 
-      var userData = responseData['data'];
+      var userData = responseData;
 
-      User authUser = User.fromJson(userData);
-      print(authUser);
+      // User authUser = User.fromJson(userData);
+      Token authToken = Token.fromJson(userData);
 
-      UserPreferences().saveUser(authUser);
+      UserPreferences().saveToken(authToken);
 
       _loggedInStatus = Status.LoggedIn;
       notifyListeners();
 
-      result = {'status': true, 'message': 'Successful', 'user': authUser};
+      result = {'status': true, 'message': 'Successful', 'user': responseData};
 
-    } else {
+    } else if(response.statusCode >= 300){
       _loggedInStatus = Status.NotLoggedIn;
       notifyListeners();
-      result = {
-        'status': false,
-        'message': json.decode(response.body)['error']
-      };
+      print({'json response error'});
+      // result = {
+      //   'status': false,
+      //   'message': json.decode(response[message])
+      // };
     }
 
     return result;
@@ -88,7 +93,7 @@ class AuthProvider extends ChangeNotifier {
     final Map<String, dynamic> registrationData = {
       'user':{
         'firstName': firstName,
-        'lastName': secondName,
+        'phone': secondName,
         'email': email,
         'password': password
       }
@@ -101,7 +106,10 @@ class AuthProvider extends ChangeNotifier {
       Uri.parse(AppUrl.register),
       body: json.encode(registrationData),
       headers: {'Content-Type':'application/json'}
-    ).then(onValue)
+    ).then(
+      // print(object)
+      onValue
+    )
     .catchError(onError);
   }
 
@@ -114,7 +122,7 @@ class AuthProvider extends ChangeNotifier {
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 
-    print(responseData);
+    print({'hello sign up,', responseData});
 
     if(response.statusCode == 200){
 
