@@ -98,14 +98,13 @@ class AuthProvider extends ChangeNotifier {
     };
     _registeredInStatus = Status.Registering;
     notifyListeners();
-    print({'email  check', registrationData});
 
     Response response = await post(
       Uri.parse(AppUrl.register),
       body: json.encode(registrationData),
       headers: {'Content-Type':'application/json'}
     );
-    if (response.statusCode == 200) {
+    if ( response.statusCode >= 200 && response.statusCode <= 300 ) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       var userData = responseData['data'];
 

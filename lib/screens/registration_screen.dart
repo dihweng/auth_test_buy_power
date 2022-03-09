@@ -50,15 +50,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       final Future<Map<String, dynamic>> respnseData = auth.register(email, firstName, secondName, password);
 
       respnseData.then((response) {
-          Navigator.pushReplacementNamed(context, '/login');
-        if (response.isNotEmpty) {
+          // Navigator.pushReplacementNamed(context, '/login');
+          print({' reg staus', response});
+        if (response['status']) {
 
           User user = response['data'];
 
           Fluttertoast.showToast(msg: "Account created successfully :) ");
           Provider.of<UserProvider>(context, listen: false).setUser(user);
 
-          Navigator.pushReplacementNamed(context, '/login_screen');
+          Navigator.pushReplacementNamed(context, '/login');
           auth.registeredInStatus = Status.Registered;
           auth.notify();
 
