@@ -56,11 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
           auth.notify();
           Navigator.pushReplacementNamed(context, '/home_screen');
 
-          // Navigator.pushAndRemoveUntil(
-          //   (context),
-          //   MaterialPageRoute(builder: (context) => HomeScreen()),
-          //   (route) => false);
-
         } else {
           Fluttertoast.showToast(msg: response['message']['error'].toString());
         }
@@ -77,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         // reg expression for email validation
         if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-            .hasMatch(value)) {
+          .hasMatch(value)) {
           return ("Please Enter a valid email");
         }
         return null;

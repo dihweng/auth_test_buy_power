@@ -1,5 +1,6 @@
 class Token {
   String token;
+  // String renewalToken
 
   Token({ 
     this.token, 
