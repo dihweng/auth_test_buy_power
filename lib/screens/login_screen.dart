@@ -43,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     
     Future<Map<String, dynamic>> onLogin (String email, String password)async{
-
       final Future<Map<String,dynamic>> resData =  auth.login(email, password);
       resData.then((response) {
         if (response['status']) {

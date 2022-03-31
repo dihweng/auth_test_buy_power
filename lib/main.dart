@@ -1,4 +1,8 @@
 import 'package:auth_test/providers/token_provider.dart';
+import 'package:auth_test/screens/detail_page.dart';
+import 'package:auth_test/screens/nav_pages/dashboard_page.dart';
+import 'package:auth_test/screens/home_page.dart';
+import 'package:auth_test/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +47,6 @@ class MyApp extends StatelessWidget {
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:{
-
                     print(snapshot.data);
                   }
                   break;
@@ -56,7 +59,7 @@ class MyApp extends StatelessWidget {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.data.token == null) {
-                      return SplashScreen();
+                      return HomeScreen();
                     }else if(snapshot.data.token != null){
                       print({'Hello testing token', snapshot.data.token});
                       return HomeScreen();

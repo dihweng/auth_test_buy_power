@@ -1,16 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AppLargeText extends StatelessWidget {
+class AppText extends StatelessWidget {
 
   double size;
   final String text;
   final Color color;
 
-  AppLargeText({Key key, 
-    this.size=30,
+  AppText({Key key, 
+    this.size=16,
     this.text, 
-    this.color=Colors.black}) : super(key: key);
+    this.color=Colors.black54}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,6 @@ class AppLargeText extends StatelessWidget {
        style: TextStyle(
          color: color,
          fontSize: size,
-         fontWeight: FontWeight.bold
        ),
     );
   }

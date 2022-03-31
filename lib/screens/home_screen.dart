@@ -1,5 +1,5 @@
+import 'package:auth_test/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-// import 'package:oauth_dio/oauth_dio.dart';
 
 import 'package:auth_test/model/token_model.dart';
 import 'package:auth_test/screens/splash_screen.dart';
@@ -27,13 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
   // ).then((token) {
   //     print(token.accessToken);
   // });
+
     Token token = Provider.of<TokenProvider>(context).token;
     // User user = Provider.of<UserProvider>(context).user;
     void doLogout(){
-      UserPreferences().removeUser();
+      UserPreferences().removeToken();
       Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => SplashScreen()),
+        MaterialPageRoute(builder: (context) => WelcomeScreen()),
         (route) => false);
     }
 
